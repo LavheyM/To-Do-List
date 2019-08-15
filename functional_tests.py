@@ -33,7 +33,7 @@ class NewVisitorTest(unittest.TestCase):
         # When user hits enter, the page updates and now the page Lists
         # "1: Buy peacock feathers" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(5)
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
