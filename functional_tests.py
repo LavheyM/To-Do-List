@@ -29,21 +29,34 @@ class NewVisitorTest(unittest.TestCase):
 
         # User types "Buy Peacock Feathers" as an item
         inputbox.send_keys('Buy peacock feathers')
-
         # When user hits enter, the page updates and now the page Lists
         # "1: Buy peacock feathers" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
         time.sleep(5)
-
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Buy peacock feathers' for row in rows),
-            "New To-Do Item did not appear in the table."
-        )
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
 
         # There is still a text box inviting the user to add another item.
         # User enters "Use peacock feathers to make a fly"
+
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Use peacock feathers to make a fly')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        # The page updates again, and now shows both items on her lists
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+        self.assertIn(
+            '2: Use peacock feathers to make a fly',
+            [row.text for row in rows]
+        )
+
+        # Edith wonders whether the site will remember her list. Then she sees
+        # that the site has generated a unique URL for her -- there is some
+        # explanatory text to that effect.
 
         self.fail('Finish the Test!')
 
